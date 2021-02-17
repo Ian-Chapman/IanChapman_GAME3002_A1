@@ -1,25 +1,24 @@
 using UnityEngine;
-using UnityEngine.Assertions;
-
 
 public class BallComponent : MonoBehaviour
 {
     [SerializeField]
     private Vector3 m_vOrigVelocity = Vector3.zero; // A velocity of nothing. The ball has not been kicked
+
     private Rigidbody m_ridgidBody = null;
     private GameObject m_marker = null;
 
-    private bool m_bOnGround;
+    private bool m_bOnGround = true;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         m_ridgidBody = GetComponent<Rigidbody>();
-        //Assert.IsNotNull(m_ridgidBody, "Error: RidgidBody is not attached.");   //Just for debugging purposes
+        RenderMarker();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         UpdatePositionLanded(); 
     }
@@ -45,6 +44,7 @@ public class BallComponent : MonoBehaviour
         m_marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder); //We can rely on the ball component to always reach a cylinder marker
         m_marker.transform.position = Vector3.zero; //The position of the marker relative to where the ball is located before it is kicked
         m_marker.transform.localScale = new Vector3(1f, 0.1f, 1f); //The size of the marker x, y and z
+        
         m_marker.GetComponent<Renderer>().material.color = Color.red; //The colour of the marker is set as red
         m_marker.GetComponent<Collider>().enabled = false; //The marker has no collision. It does not "physically" exist in the game.
     }
@@ -58,13 +58,11 @@ public class BallComponent : MonoBehaviour
         }
     }
 
-
-
     public void BallKicked()
     {
-        if (!m_bOnGround) //If the ball is in the air...
+        if (!m_bOnGround)
         {
-            return; //...then skip this whole function
+            return;
         }
 
         m_marker.transform.position = GetPositionLanded(); //Start calculating the where the ball will make contact with the ground
@@ -73,6 +71,7 @@ public class BallComponent : MonoBehaviour
         transform.LookAt(m_marker.transform.position, Vector3.up); //Forward vector is changed to "look at" the marker at its position from  when the ball was kicked
 
         m_ridgidBody.velocity = m_vOrigVelocity; //Velocity of the ridgid body component is instantly set back to 0;
+        Debug.Log("Hello");
     }
 
 

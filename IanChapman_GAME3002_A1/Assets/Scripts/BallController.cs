@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class BallController : MonoBehaviour
 {
@@ -12,7 +11,6 @@ public class BallController : MonoBehaviour
     void Start()
     {
         m_ball = GetComponent<BallComponent>();
-        Assert.IsNotNull(m_ball, "Error: BallComponent is not attached.");
     }
 
     // Update is called once per frame
